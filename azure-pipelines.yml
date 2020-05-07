@@ -8,23 +8,21 @@ variables:
   imageName: 'pipelines-docker'
 
 steps:
-- task: Docker@2
-  displayName: Build an image
+- task: Docker@0
+  displayName: 'Build an image'
   inputs:
-    repository: $(imageName)
-    command: build
-    Dockerfile: app/Dockerfile
+    azureSubscription: 'sonrani@publicisgroupe.net (8f1d3abe-0d1d-4025-a396-a99c12dd0239)'
+    azureContainerRegistry: '$(Parameters.azureContainerRegistry)'
+    dockerFile: app/Dockerfile
 
-- task: DockerCompose@0
+- task: Docker@0
+  displayName: 'Push an image'
   inputs:
-    containerregistrytype: 'Azure Container Registry'
-    azureSubscription: 'sonrani@publicisgroupe.net(8f1d3abe-0d1d-4025-a396-a99c12dd0239)'
-    azureContainerRegistry: '{"loginServer":"firstcontainer02.azurecr.io", "id" : "/subscriptions/8f1d3abe-0d1d-4025-a396-a99c12dd0239/resourceGroups/acrgroup/providers/Microsoft.ContainerRegistry/registries/firstcontainer02"}'
-    dockerComposeFile: '**/docker-compose.yml'
-    action: 'Run a Docker Compose command'
+    azureSubscription: 'sonrani@publicisgroupe.net (8f1d3abe-0d1d-4025-a396-a99c12dd0239)'
+    azureContainerRegistry: '$(Parameters.azureContainerRegistry)'
+    action: 'Push an image'
 
 - task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+    PathtoPublish: 'azure-pipelines.yml'
