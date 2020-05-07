@@ -12,14 +12,14 @@ steps:
   displayName: 'Build an image'
   inputs:
     azureSubscription: 'sonrani@publicisgroupe.net (8f1d3abe-0d1d-4025-a396-a99c12dd0239)'
-    azureContainerRegistry: '$(Parameters.azureContainerRegistry)'
+    azureContainerRegistry: 'firstcontainer02'
     dockerFile: app/Dockerfile
 
 - task: Docker@0
   displayName: 'Push an image'
   inputs:
     azureSubscription: 'sonrani@publicisgroupe.net (8f1d3abe-0d1d-4025-a396-a99c12dd0239)'
-    azureContainerRegistry: '$(Parameters.azureContainerRegistry)'
+    azureContainerRegistry: 'firstcontainer02'
     action: 'Push an image'
 
 - task: PublishBuildArtifacts@1
