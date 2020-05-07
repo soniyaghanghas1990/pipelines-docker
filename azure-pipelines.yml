@@ -8,21 +8,15 @@ variables:
   imageName: 'pipelines-docker'
 
 steps:
-- task: Docker@0
-  displayName: 'Build an image'
+- task: Docker@2
   inputs:
-    azureSubscription: 'sonrani@publicisgroupe.net (8f1d3abe-0d1d-4025-a396-a99c12dd0239)'
-    azureContainerRegistry: 'firstcontainer02'
-    dockerFile: app/Dockerfile
+    containerRegistry: 'dockerconnection'
+    repository: 'kubernetes'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
 
-- task: Docker@0
-  displayName: 'Push an image'
+- task: PublishPipelineArtifact@1
   inputs:
-    azureSubscription: 'sonrani@publicisgroupe.net (8f1d3abe-0d1d-4025-a396-a99c12dd0239)'
-    azureContainerRegistry: 'firstcontainer02'
-    action: 'Push an image'
-
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: drop'
-  inputs:
-    PathtoPublish: 'azure-pipelines.yml'
+    targetPath: '$(Pipeline.Workspace)'
+    artifact: 'drop'
+    publishLocation: 'pipeline'
