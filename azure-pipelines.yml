@@ -10,7 +10,7 @@ variables:
 steps:
 - task: Docker@2
   inputs:
-    containerRegistry: 'dockerconnection'
+    containerRegistry: 'testconnection'
     repository: 'kubernetes'
     command: 'buildAndPush'
     Dockerfile: '**/Dockerfile'
