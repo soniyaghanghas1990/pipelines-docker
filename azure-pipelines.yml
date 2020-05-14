@@ -1,22 +1,24 @@
-trigger:
-- master
-
 pool:
-  vmImage: 'Ubuntu-16.04'
-
-variables:
-  imageName: 'pipelines-docker'
+  name: Azure Pipelines
+#Your build pipeline references an undefined variable named ‘Parameters.azureContainerRegistry’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references an undefined variable named ‘Parameters.azureContainerRegistry’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
 
 steps:
-- task: Docker@2
+- task: Docker@0
+  displayName: 'Build an image'
   inputs:
-    containerRegistry: 'testconnection'
-    repository: 'kubernetes'
-    command: 'buildAndPush'
-    Dockerfile: '**/Dockerfile'
+    azureSubscription: 'sonrani@publicisgroupe.net (8f1d3abe-0d1d-4025-a396-a99c12dd0239)'
+    azureContainerRegistry: 'firstcontainer02'
+    dockerFile: app/Dockerfile
 
-- task: PublishPipelineArtifact@1
+- task: Docker@0
+  displayName: 'Push an image'
   inputs:
-    targetPath: '$(Pipeline.Workspace)'
-    artifact: 'drop'
-    publishLocation: 'pipeline'
+    azureSubscription: 'sonrani@publicisgroupe.net (8f1d3abe-0d1d-4025-a396-a99c12dd0239)'
+    azureContainerRegistry: 'firstcontainer02'
+    action: 'Push an image'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
+  inputs:
+    PathtoPublish: 'azure-pipelines.yml'
